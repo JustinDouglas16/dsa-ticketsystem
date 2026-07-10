@@ -1,6 +1,7 @@
 import "./style.css";
 import type { Ticket } from "./models/Ticket";
 import { priorityValue } from "./models/Ticket";
+import { createTicket } from "./utils/createTicket";
 
 const tickets: Ticket[] = [
   {
@@ -40,6 +41,15 @@ const tickets: Ticket[] = [
     resolvedAt: null,
   },
 ];
+
+const newTicket = createTicket({
+  id: "TCK-1005",
+  title: "Internet is traag",
+  description: "De internetverbinding op kantoor is instabiel.",
+  priority: "high",
+});
+
+tickets.push(newTicket);
 
 console.log(tickets);
 // displayes tickets in a table format
