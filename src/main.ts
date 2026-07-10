@@ -51,3 +51,17 @@ for (const ticket of tickets) {
     `${ticket.id}: ${ticket.priority} heeft waarde ${priorityValue[ticket.priority]}`,
   );
 }
+
+// some html code
+const app = document.querySelector<HTMLDivElement>("#app");
+
+if (!app) {
+  throw new Error("het element met id 'app' bestaat niet");
+}
+
+app.innerHTML = `
+<main>
+    <h1>Ticketingsysteem</h1>
+    <p>Aantal tickets: ${tickets.length}</p>
+</main>
+`;
