@@ -17,3 +17,12 @@ export interface Ticket {
   createdAt: Date;
   resolvedAt: Date | null;
 }
+
+// priority queue
+
+export const priorityValue: Record<TicketPriority, number> = {
+  low: 1,
+  normal: 2,
+  high: 3,
+  critical: 4,
+};
