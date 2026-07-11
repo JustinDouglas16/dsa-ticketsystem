@@ -51,6 +51,22 @@ const newTicket = createTicket({
 
 tickets.push(newTicket);
 
+// use try...catch to handle errors a little nicer. might remove later.
+// try {
+//   const invalidTicket = createTicket({
+//     id: "TCK-1006",
+//     title: "",
+//     description: "Dit ticket heeft geen titel.",
+//     priority: "normal",
+//   });
+
+//   tickets.push(invalidTicket);
+// } catch (error) {
+//   if (error instanceof Error) {
+//     console.error(error.message);
+//   }
+// }
+
 console.log(tickets);
 // displayes tickets in a table format
 console.table(tickets);
