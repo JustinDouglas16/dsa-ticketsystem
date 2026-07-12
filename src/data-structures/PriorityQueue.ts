@@ -57,4 +57,9 @@ export class PriorityQueue<T> {
    * Does the item have a higher priority? Swap the two.
    * Repeat until the heap is correct.
    */
+
+  enqueue(item: T) {
+    this.heap.push(item);
+    this.bubbleUp();
+  }
 }
