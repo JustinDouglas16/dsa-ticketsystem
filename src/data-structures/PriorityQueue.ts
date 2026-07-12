@@ -48,4 +48,13 @@ export class PriorityQueue<T> {
   ];
 }
  */
+
+  /**
+   * enqueue() adds an item to the Priority Queue.
+   * The steps are:
+   * Add the item to the end of the array.
+   * Compare the item with its parent.
+   * Does the item have a higher priority? Swap the two.
+   * Repeat until the heap is correct.
+   */
 }
