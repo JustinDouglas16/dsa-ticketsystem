@@ -20,6 +20,103 @@ export class PriorityQueue<T> {
     return this.heap[0];
   }
 
+  /**
+   * enqueue() adds an item to the Priority Queue.
+   * The steps are:
+   * Add the item to the end of the array.
+   * Compare the item with its parent.
+   * Does the item have a higher priority? Swap the two.
+   * Repeat until the heap is correct.
+   */
+
+  enqueue(item: T) {
+    this.heap.push(item);
+    this.bubbleUp();
+  }
+
+  //   dequeue
+  dequeue(): T | undefined {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+
+    if (this.heap.length === 1) {
+      return this.heap.pop();
+    }
+
+    const highestPriorityItem = this.heap[0];
+    const lastItem = this.heap.pop();
+
+    if (lastItem === undefined) {
+      return undefined;
+    }
+
+    this.heap[0] = lastItem;
+    this.bubbleDown();
+
+    return highestPriorityItem;
+  }
+
+  // bubbleUp()
+  private bubbleUp(): void {
+    let currentIndex = this.heap.length - 1;
+    while (currentIndex > 0) {
+      const parentIndex = this.getParentIndex(currentIndex);
+
+      const currentItem = this.heap[currentIndex];
+      const parentItem = this.heap[parentIndex];
+
+      const currentHasHigherPriority =
+        this.compare(currentItem, parentItem) > 0;
+
+      if (!currentHasHigherPriority) {
+        break;
+      }
+
+      this.swap(currentIndex, parentIndex);
+      currentIndex = parentIndex;
+    }
+  }
+
+  // bubbleDown()
+  private bubbleDown(): void {
+    let currentIndex = 0;
+
+    while (true) {
+      const leftChildIndex = this.getLeftChildIndex(currentIndex);
+      const rightChildIndex = this.getRightChildIndex(currentIndex);
+
+      let highestPriorityIndex = currentIndex;
+
+      if (
+        leftChildIndex < this.heap.length &&
+        this.compare(
+          this.heap[leftChildIndex],
+          this.heap[highestPriorityIndex],
+        ) > 0
+      ) {
+        highestPriorityIndex = leftChildIndex;
+      }
+
+      if (
+        rightChildIndex < this.heap.length &&
+        this.compare(
+          this.heap[rightChildIndex],
+          this.heap[highestPriorityIndex],
+        ) > 0
+      ) {
+        highestPriorityIndex = rightChildIndex;
+      }
+
+      if (highestPriorityIndex === currentIndex) {
+        break;
+      }
+
+      this.swap(currentIndex, highestPriorityIndex);
+      currentIndex = highestPriorityIndex;
+    }
+  }
+
   private getParentIndex(index: number): number {
     return Math.floor((index - 1) / 2);
   }
@@ -48,61 +145,4 @@ export class PriorityQueue<T> {
   ];
 }
  */
-
-  /**
-   * enqueue() adds an item to the Priority Queue.
-   * The steps are:
-   * Add the item to the end of the array.
-   * Compare the item with its parent.
-   * Does the item have a higher priority? Swap the two.
-   * Repeat until the heap is correct.
-   */
-
-  enqueue(item: T) {
-    this.heap.push(item);
-    this.bubbleUp();
-  }
-
-  private bubbleUp(): void {
-    let currentIndex = this.heap.length - 1;
-    while (currentIndex > 0) {
-      const parentIndex = this.getParentIndex(currentIndex);
-
-      const currentItem = this.heap[currentIndex];
-      const parentItem = this.heap[parentIndex];
-
-      const currentHasHigherPriority =
-        this.compare(currentItem, parentItem) > 0;
-
-      if (!currentHasHigherPriority) {
-        break;
-      }
-
-      this.swap(currentIndex, parentIndex);
-      currentIndex = parentIndex;
-    }
-  }
-
-  //   dequeue
-  dequeue(): T | undefined {
-    if (this.isEmpty()) {
-      return undefined;
-    }
-
-    if (this.heap.length === 1) {
-      return this.heap.pop();
-    }
-
-    const highestPriorityItem = this.heap[0];
-    const lastItem = this.heap.pop();
-
-    if (lastItem === undefined) {
-      return undefined;
-    }
-
-    this.heap[0] = lastItem;
-    this.bubbleDown();
-
-    return highestPriorityItem;
-  }
 }
