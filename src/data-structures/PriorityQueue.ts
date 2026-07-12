@@ -62,4 +62,24 @@ export class PriorityQueue<T> {
     this.heap.push(item);
     this.bubbleUp();
   }
+
+  private bubbleUp(): void {
+    let currentIndex = this.heap.length - 1;
+    while (currentIndex > 0) {
+      const parentIndex = this.getParentIndex(currentIndex);
+
+      const currentItem = this.heap[currentIndex];
+      const parentItem = this.heap[parentIndex];
+
+      const currentHasHigherPriority =
+        this.compare(currentItem, parentItem) > 0;
+
+      if (!currentHasHigherPriority) {
+        break;
+      }
+
+      this.swap(currentIndex, parentIndex);
+      currentIndex = parentIndex;
+    }
+  }
 }
