@@ -31,4 +31,21 @@ private getLeftChildIndex(index: number): number {
 private getRightChildIndex(index: number): number {
   return 2 * index + 2;
 }
+
+private swap(firstIndex: number, secondIndex: number): void {
+const temporaryItem = this.heap[firstIndex];
+
+this.heap[firstIndex] = this.heap[secondIndex];
+this.heap[secondIndex] = temporaryItem;
+}
+
+// can also be written like this
+/**
+ * private swap(firstIndex: number, secondIndex: number): void {
+  [this.heap[firstIndex], this.heap[secondIndex]] = [
+    this.heap[secondIndex],
+    this.heap[firstIndex],
+  ];
+}
+ */
 }
