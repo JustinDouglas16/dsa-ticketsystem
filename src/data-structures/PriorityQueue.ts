@@ -19,4 +19,16 @@ export class PriorityQueue<T> {
   peek(): T | undefined {
     return this.heap.[0];
   }
+
+  private getParentIndex(index: number): number {
+  return Math.floor((index - 1) / 2);
+}
+
+private getLeftChildIndex(index: number): number {
+  return 2 * index + 1;
+}
+
+private getRightChildIndex(index: number): number {
+  return 2 * index + 2;
+}
 }
