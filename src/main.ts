@@ -80,6 +80,32 @@ for (const ticket of tickets) {
 }
 
 // queue test code
+// const numberQueue = new PriorityQueue<number>(
+//   (first, second) => first - second,
+// );
+
+// numberQueue.enqueue(4);
+// numberQueue.enqueue(10);
+// numberQueue.enqueue(2);
+// numberQueue.enqueue(7);
+
+// const numberQueue = new PriorityQueue<number>(
+//   (first, second) => first - second,
+// );
+
+// numberQueue.enqueue(4);
+// numberQueue.enqueue(10);
+// numberQueue.enqueue(2);
+// numberQueue.enqueue(7);
+// numberQueue.enqueue(15);
+
+// console.log(numberQueue.dequeue());
+// console.log(numberQueue.dequeue());
+// console.log(numberQueue.dequeue());
+// console.log(numberQueue.dequeue());
+// console.log(numberQueue.dequeue());
+// console.log(numberQueue.dequeue());
+
 const numberQueue = new PriorityQueue<number>(
   (first, second) => first - second,
 );
@@ -88,6 +114,11 @@ numberQueue.enqueue(4);
 numberQueue.enqueue(10);
 numberQueue.enqueue(2);
 numberQueue.enqueue(7);
+numberQueue.enqueue(15);
+
+while (!numberQueue.isEmpty()) {
+  console.log(numberQueue.dequeue());
+}
 
 console.log("Hoogste nummer:", numberQueue.peek());
 console.log("Aantal nummers:", numberQueue.size());

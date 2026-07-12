@@ -2,7 +2,11 @@
 export class PriorityQueue<T> {
   private heap: T[] = [];
 
-  constructor(private readonly compare: (first: T, second: T) => number) {}
+  private readonly compare: (first: T, second: T) => number;
+
+  constructor(compare: (first: T, second: T) => number) {
+    this.compare = compare;
+  }
 
   // This function returns the number of items in the queue.
   size(): number {
