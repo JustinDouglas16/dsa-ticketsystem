@@ -2,6 +2,7 @@ import "./style.css";
 import type { Ticket } from "./models/Ticket";
 import { priorityValue } from "./models/Ticket";
 import { createTicket } from "./utils/createTicket";
+import { PriorityQueue } from "./data-structures/PriorityQueue";
 
 const tickets: Ticket[] = [
   {
@@ -77,6 +78,19 @@ for (const ticket of tickets) {
     `${ticket.id}: ${ticket.priority} heeft waarde ${priorityValue[ticket.priority]}`,
   );
 }
+
+// queue test code
+const numberQueue = new PriorityQueue<number>(
+  (first, second) => first - second,
+);
+
+numberQueue.enqueue(4);
+numberQueue.enqueue(10);
+numberQueue.enqueue(2);
+numberQueue.enqueue(7);
+
+console.log("Hoogste nummer:", numberQueue.peek());
+console.log("Aantal nummers:", numberQueue.size());
 
 // some html code
 const app = document.querySelector<HTMLDivElement>("#app");
