@@ -82,4 +82,27 @@ export class PriorityQueue<T> {
       currentIndex = parentIndex;
     }
   }
+
+  //   dequeue
+  dequeue(): T | undefined {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+
+    if (this.heap.length === 1) {
+      return this.heap.pop();
+    }
+
+    const highestPriorityItem = this.heap[0];
+    const lastItem = this.heap.pop();
+
+    if (lastItem === undefined) {
+      return undefined;
+    }
+
+    this.heap[0] = lastItem;
+    this.bubbleDown();
+
+    return highestPriorityItem;
+  }
 }
