@@ -81,6 +81,7 @@ while (!ticketQueue.isEmpty()) {
     );
   }
 }
+console.log(ticketQueue.toArray);
 
 const app = document.querySelector<HTMLDivElement>("#app");
 

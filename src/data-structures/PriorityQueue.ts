@@ -24,6 +24,10 @@ export class PriorityQueue<T> {
     return this.heap[0];
   }
 
+  toArray(): T[] {
+    return [...this.heap];
+  }
+
   /**
    * enqueue() adds an item to the Priority Queue.
    * The steps are:
