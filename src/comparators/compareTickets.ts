@@ -8,5 +8,11 @@ export function compareTickets(first: Ticket, second: Ticket): number {
     return priorityDifference;
   }
 
-  return second.createdAt.getTime() - first.createdAt.getTime();
+  const dateDifference = second.createdAt.getTime() - first.createdAt.getTime();
+
+  if (dateDifference !== 0) {
+    return dateDifference;
+  }
+
+  return second.id.localeCompare(first.id);
 }
