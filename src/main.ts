@@ -1,8 +1,8 @@
 import "./style.css";
-import type { Ticket } from "./models/Ticket";
-import { priorityValue } from "./models/Ticket";
-import { createTicket } from "./utils/createTicket";
+
+import { compareTickets } from "./comparators/compareTickets";
 import { PriorityQueue } from "./data-structures/PriorityQueue";
+import type { Ticket } from "./models/Ticket";
 
 const tickets: Ticket[] = [
   {
@@ -37,102 +37,61 @@ const tickets: Ticket[] = [
     title: "Account geblokkeerd",
     description: "Het account van een medewerker is geblokkeerd.",
     priority: "high",
-    status: "in-progress",
+    status: "open",
     createdAt: new Date("2026-06-19T09:15:00"),
+    resolvedAt: null,
+  },
+  {
+    id: "TCK-1005",
+    title: "E-mail werkt niet",
+    description: "De gebruiker kan geen e-mails verzenden.",
+    priority: "high",
+    status: "open",
+    createdAt: new Date("2026-06-19T07:30:00"),
+    resolvedAt: null,
+  },
+  {
+    id: "TCK-1006",
+    title: "Applicatie reageert traag",
+    description: "Het dashboard laadt erg langzaam.",
+    priority: "high",
+    status: "open",
+    createdAt: new Date("2026-06-19T10:00:00"),
     resolvedAt: null,
   },
 ];
 
-const newTicket = createTicket({
-  id: "TCK-1005",
-  title: "Internet is traag",
-  description: "De internetverbinding op kantoor is instabiel.",
-  priority: "high",
-});
+const ticketQueue = new PriorityQueue<Ticket>(compareTickets);
 
-tickets.push(newTicket);
-
-// use try...catch to handle errors a little nicer. might remove later.
-// try {
-//   const invalidTicket = createTicket({
-//     id: "TCK-1006",
-//     title: "",
-//     description: "Dit ticket heeft geen titel.",
-//     priority: "normal",
-//   });
-
-//   tickets.push(invalidTicket);
-// } catch (error) {
-//   if (error instanceof Error) {
-//     console.error(error.message);
-//   }
-// }
-
-console.log(tickets);
-// displayes tickets in a table format
-console.table(tickets);
-
-// prints value of ticket priority
 for (const ticket of tickets) {
-  console.log(
-    `${ticket.id}: ${ticket.priority} heeft waarde ${priorityValue[ticket.priority]}`,
-  );
+  ticketQueue.enqueue(ticket);
 }
 
-// queue test code
-// const numberQueue = new PriorityQueue<number>(
-//   (first, second) => first - second,
-// );
+console.log("Eerstvolgende ticket:");
+console.log(ticketQueue.peek());
 
-// numberQueue.enqueue(4);
-// numberQueue.enqueue(10);
-// numberQueue.enqueue(2);
-// numberQueue.enqueue(7);
+console.log("Verwerkingsvolgorde:");
 
-// const numberQueue = new PriorityQueue<number>(
-//   (first, second) => first - second,
-// );
+while (!ticketQueue.isEmpty()) {
+  const ticket = ticketQueue.dequeue();
 
-// numberQueue.enqueue(4);
-// numberQueue.enqueue(10);
-// numberQueue.enqueue(2);
-// numberQueue.enqueue(7);
-// numberQueue.enqueue(15);
-
-// console.log(numberQueue.dequeue());
-// console.log(numberQueue.dequeue());
-// console.log(numberQueue.dequeue());
-// console.log(numberQueue.dequeue());
-// console.log(numberQueue.dequeue());
-// console.log(numberQueue.dequeue());
-
-const numberQueue = new PriorityQueue<number>(
-  (first, second) => first - second,
-);
-
-numberQueue.enqueue(4);
-numberQueue.enqueue(10);
-numberQueue.enqueue(2);
-numberQueue.enqueue(7);
-numberQueue.enqueue(15);
-
-while (!numberQueue.isEmpty()) {
-  console.log(numberQueue.dequeue());
+  if (ticket) {
+    console.log(
+      `${ticket.id} - ${ticket.title} - ${ticket.priority} - ${ticket.createdAt.toLocaleString()}`,
+    );
+  }
 }
 
-console.log("Hoogste nummer:", numberQueue.peek());
-console.log("Aantal nummers:", numberQueue.size());
-
-// some html code
 const app = document.querySelector<HTMLDivElement>("#app");
 
 if (!app) {
-  throw new Error("het element met id 'app' bestaat niet");
+  throw new Error("Het element met id 'app' bestaat niet.");
 }
 
 app.innerHTML = `
-<main>
+  <main>
     <h1>Ticketingsysteem</h1>
-    <p>Aantal tickets: ${tickets.length}</p>
-</main>
+    <p>Open de browserconsole om de Priority Queue te testen.</p>
+    <p>Aantal testtickets: ${tickets.length}</p>
+  </main>
 `;

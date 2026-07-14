@@ -1,6 +1,6 @@
 import { priorityValue, type Ticket } from "../models/Ticket";
 
-export function compareTicket(first: Ticket, second: Ticket): number {
+export function compareTickets(first: Ticket, second: Ticket): number {
   const priorityDifference =
     priorityValue[first.priority] - priorityValue[second.priority];
 
