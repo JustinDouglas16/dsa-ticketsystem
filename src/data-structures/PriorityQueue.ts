@@ -28,6 +28,10 @@ export class PriorityQueue<T> {
     return [...this.heap];
   }
 
+  clear(): void {
+    this.heap = [];
+  }
+
   /**
    * enqueue() adds an item to the Priority Queue.
    * The steps are:
