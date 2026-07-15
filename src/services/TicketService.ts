@@ -260,4 +260,10 @@ export class TicketService {
 
     return existed;
   }
+
+  clearAllTickets(): void {
+    this.tickets.clear();
+    this.queue.clear();
+    this.queuedTicketIds.clear();
+  }
 }
