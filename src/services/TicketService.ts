@@ -1,5 +1,3 @@
-// TODO: Implement the ticket service.
-
 import { compareTickets } from "../comparators/compareTickets";
 import { PriorityQueue } from "../data-structures/PriorityQueue";
 import type { Ticket, TicketPriority } from "../models/Ticket";
@@ -30,9 +28,11 @@ export interface TicketStatistics {
 }
 
 export class TicketService {
-  private readonly Tickets = new Map<string, Ticket>();
+  private readonly tickets = new Map<string, Ticket>();
 
   private readonly queue = new PriorityQueue<Ticket>(compareTickets);
+
+  private readonly queuedTicketIds = new Set<string>();
 
   createTicket(input: CreateTicketInput): Ticket {
     const id = input.id.trim().toUpperCase();
