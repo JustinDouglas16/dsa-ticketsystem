@@ -11,6 +11,16 @@ export interface CreateTicketInput {
   priority: TicketPriority;
 }
 
+export interface AddExistingTicketInput {
+  id: string;
+  title: string;
+  description: string;
+  priority: TicketPriority;
+  status?: Ticket["status"];
+  createdAt: Date;
+  resolvedAt?: Date | null;
+}
+
 export class TicketService {
   private readonly Tickets = new Map<string, Ticket>();
 
