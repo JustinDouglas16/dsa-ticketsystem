@@ -164,4 +164,26 @@ export class TicketService {
 
     return this.queue.peek();
   }
+
+  processNextTicket(): Ticket | undefined {
+    this.cleanQueueTop();
+
+    const ticket = this.queue.dequeue();
+
+    if (!ticket) {
+      return undefined;
+    }
+
+    this.queuedTicketIds.delete(ticket.id);
+
+    const currentTicket = this.tickets.get(ticket.id);
+
+    if (!currentTicket) {
+      return undefined;
+    }
+
+    currentTicket.status = "in-progress";
+
+    return currentTicket;
+  }
 }
