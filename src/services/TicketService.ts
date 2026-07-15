@@ -118,4 +118,44 @@ export class TicketService {
 
     return ticket;
   }
+
+  getTicketById(id: string): Ticket | undefined {
+    const normalizedId = id.trim().toUpperCase();
+
+    return this.tickets.get(normalizedId);
+  }
+
+  hasTicket(id: string): boolean {
+    const normalizedId = id.trim().toUpperCase();
+
+    return this.tickets.has(normalizedId);
+  }
+
+  getAllTickets(): Ticket[] {
+    return Array.from(this.tickets.values());
+  }
+
+  getTicketCount(): number {
+    return this.tickets.size;
+  }
+
+  getOpenTickets(): Ticket[] {
+    return this.getAllTickets().filter((ticket) => ticket.status === "open");
+  }
+
+  getInProgressTickets(): Ticket[] {
+    return this.getAllTickets().filter(
+      (ticket) => ticket.status === "in-progress",
+    );
+  }
+
+  getClosedTickets(): Ticket[] {
+    return this.getAllTickets().filter((ticket) => ticket.status === "closed");
+  }
+
+  getTicketsByPriority(priority: TicketPriority): Ticket[] {
+    return this.getAllTickets().filter(
+      (ticket) => ticket.priority === priority,
+    );
+  }
 }
