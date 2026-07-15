@@ -251,4 +251,13 @@ export class TicketService {
 
     return ticket;
   }
+
+  deleteTicket(id: string): boolean {
+    const normalizedId = id.trim().toUpperCase();
+    const existed = this.tickets.delete(normalizedId);
+
+    this.queuedTicketIds.delete(normalizedId);
+
+    return existed;
+  }
 }
