@@ -158,4 +158,10 @@ export class TicketService {
       (ticket) => ticket.priority === priority,
     );
   }
+
+  peekNextTicket(): Ticket | undefined {
+    this.cleanQueueTop();
+
+    return this.queue.peek();
+  }
 }
