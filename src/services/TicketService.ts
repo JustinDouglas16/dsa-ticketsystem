@@ -266,4 +266,34 @@ export class TicketService {
     this.queue.clear();
     this.queuedTicketIds.clear();
   }
+
+  getStatistics(): TicketStatistics {
+    const statistics: TicketStatistics = {
+      total: this.tickets.size,
+      open: 0,
+      inProgress: 0,
+      closed: 0,
+      critical: 0,
+    };
+
+    for (const ticket of this.tickets.values()) {
+      if (ticket.status === "open") {
+        statistics.open++;
+      }
+
+      if (ticket.status === "in-progress") {
+        statistics.inProgress++;
+      }
+
+      if (ticket.status === "closed") {
+        statistics.closed++;
+      }
+
+      if (ticket.priority === "critical") {
+        statistics.critical++;
+      }
+    }
+
+    return statistics;
+  }
 }
