@@ -296,4 +296,26 @@ export class TicketService {
 
     return statistics;
   }
+
+  private cleanQueueTop(): void {
+    while (!this.queue.isEmpty()) {
+      const ticket = this.queue.peek();
+
+      if (!ticket) {
+        return;
+      }
+
+      const currentTicket = this.tickets.get(ticket.id);
+
+      const isValidOpenTicket =
+        currentTicket !== undefined && currentTicket.status === "open";
+
+      if (isValidOpenTicket) {
+        return;
+      }
+
+      this.queue.dequeue();
+      this.queuedTicketIds.delete(ticket.id);
+    }
+  }
 }
