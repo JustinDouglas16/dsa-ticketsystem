@@ -21,6 +21,14 @@ export interface AddExistingTicketInput {
   resolvedAt?: Date | null;
 }
 
+export interface TicketStatistics {
+  total: number;
+  open: number;
+  inProgress: number;
+  closed: number;
+  critical: number;
+}
+
 export class TicketService {
   private readonly Tickets = new Map<string, Ticket>();
 
