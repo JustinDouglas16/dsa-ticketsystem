@@ -227,4 +227,28 @@ export class TicketService {
 
     return ticket;
   }
+
+  returnTicketToQueue(id: string): Ticket {
+    const normalizedId = id.trim().toUpperCase();
+    const ticket = this.tickets.get(normalizedId);
+
+    if (!ticket) {
+      throw new Error(`Ticket ${normalizedId} bestaat niet.`);
+    }
+
+    if (ticket.status !== "in-progress") {
+      throw new Error(
+        "Alleen een ticket dat in behandeling is kan terug naar de wachtrij.",
+      );
+    }
+
+    ticket.status = "open";
+
+    if (!this.queuedTicketIds.has(ticket.id)) {
+      this.queue.enqueue(ticket);
+      this.queuedTicketIds.add(ticket.id);
+    }
+
+    return ticket;
+  }
 }
