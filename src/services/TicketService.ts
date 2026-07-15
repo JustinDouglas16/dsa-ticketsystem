@@ -204,4 +204,27 @@ export class TicketService {
 
     return ticket;
   }
+
+  reopenTicket(id: string): Ticket {
+    const normalizedId = id.trim().toUpperCase();
+    const ticket = this.tickets.get(normalizedId);
+
+    if (!ticket) {
+      throw new Error(`Ticket ${normalizedId} bestaat niet.`);
+    }
+
+    if (ticket.status !== "closed") {
+      throw new Error(`Ticket ${normalizedId} is niet gesloten.`);
+    }
+
+    ticket.status = "open";
+    ticket.resolvedAt = null;
+
+    if (!this.queuedTicketIds.has(ticket.id)) {
+      this.queue.enqueue(ticket);
+      this.queuedTicketIds.add(ticket.id);
+    }
+
+    return ticket;
+  }
 }
