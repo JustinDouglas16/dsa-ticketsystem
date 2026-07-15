@@ -67,6 +67,54 @@ export class TicketService {
 
     this.tickets.set(ticket.id, ticket);
     this.queue.enqueue(ticket);
+    this.queuedTicketIds.add(ticket.id);
+
+    return ticket;
+  }
+
+  addExistingTicket(input: AddExistingTicketInput): Ticket {
+    const id = input.id.trim().toUpperCase();
+    const title = input.title.trim();
+    const description = input.description.trim();
+
+    if (id.length === 0) {
+      throw new Error("Een ticket moet een ID hebben.");
+    }
+
+    if (title.length === 0) {
+      throw new Error("Een ticket moet een titel hebben.");
+    }
+
+    if (description.length === 0) {
+      throw new Error("Een ticket moet een beschrijving hebben.");
+    }
+
+    if (Number.isNaN(input.createdAt.getTime())) {
+      throw new Error("De aanmaakdatum is ongeldig.");
+    }
+
+    if (this.tickets.has(id)) {
+      throw new Error(`Ticket ${id} bestaat al.`);
+    }
+
+    const status = input.status ?? "open";
+
+    const ticket: Ticket = {
+      id,
+      title,
+      description,
+      priority: input.priority,
+      status,
+      createdAt: new Date(input.createdAt),
+      resolvedAt: input.resolvedAt === undefined ? null : input.resolvedAt,
+    };
+
+    this.tickets.set(ticket.id, ticket);
+
+    if (ticket.status === "open") {
+      this.queue.enqueue(ticket);
+      this.queuedTicketIds.add(ticket.id);
+    }
 
     return ticket;
   }
