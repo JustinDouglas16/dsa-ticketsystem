@@ -186,4 +186,22 @@ export class TicketService {
 
     return currentTicket;
   }
+
+  closeTicket(id: string): Ticket {
+    const normalizedId = id.trim().toUpperCase();
+    const ticket = this.tickets.get(normalizedId);
+
+    if (!ticket) {
+      throw new Error(`Ticket ${normalizedId} bestaat niet.`);
+    }
+
+    if (ticket.status === "closed") {
+      throw new Error(`Ticket ${normalizedId} is al gesloten.`);
+    }
+
+    ticket.status = "closed";
+    ticket.resolvedAt = new Date();
+
+    return ticket;
+  }
 }
