@@ -46,6 +46,13 @@ export function compareTicketsByNewest(first: Ticket, second: Ticket): number {
   return second.createdAt.getTime() - first.createdAt.getTime();
 }
 
+/**
+ * order of tickets as follows
+ * highest priority
+ * similar priorities: oldest
+ * similar dates for oldest priorities: lowest ID
+ *
+ */
 export function compareTicketsByPriorityDescending(
   first: Ticket,
   second: Ticket,
