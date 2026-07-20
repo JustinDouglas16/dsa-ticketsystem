@@ -50,6 +50,10 @@ export interface TicketStatistics {
   critical: number;
 }
 
+function assertNever(value: never): never {
+  throw new Error(`Onbekende sorteeroptie: ${String(value)}`);
+}
+
 export class TicketService {
   private readonly tickets = new Map<string, Ticket>();
 
@@ -372,6 +376,9 @@ export class TicketService {
 
       case "status":
         return mergeSort(tickets, compareTicketsByStatus);
+
+      default:
+        return assertNever(option);
     }
   }
 }
