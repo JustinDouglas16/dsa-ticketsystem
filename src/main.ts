@@ -1,8 +1,16 @@
 import "./style.css";
 
 import { TicketService } from "./services/TicketService";
+import { mergeSort } from "./algorithms/mergeSort";
 
 const ticketService = new TicketService();
+
+const numbers = [8, 3, 5, 1, 9, 2];
+
+const sortedNumbers = mergeSort(numbers, (first, second) => first - second);
+
+console.log("Originele nummers:", numbers);
+console.log("Gesorteerde nummers:", sortedNumbers);
 
 ticketService.addExistingTicket({
   id: "TCK-1001",
