@@ -7,6 +7,14 @@ const ticketService = new TicketService();
 
 const numbers = [8, 3, 5, 1, 9, 2];
 
+const names = ["Zara", "Anna", "Michael", "Brian"];
+
+const sortedNames = mergeSort(names, (first, second) =>
+  first.localeCompare(second),
+);
+
+console.log(sortedNames);
+
 const sortedNumbers = mergeSort(numbers, (first, second) => first - second);
 
 console.log("Originele nummers:", numbers);
