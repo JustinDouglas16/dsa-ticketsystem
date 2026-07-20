@@ -50,7 +50,20 @@ export function compareTicketsByPriorityDescending(
   first: Ticket,
   second: Ticket,
 ): number {
-  return priorityValue[second.priority] - priorityValue[first.priority];
+  const priorityDifference =
+    priorityValue[second.priority] - priorityValue[first.priority];
+
+  if (priorityDifference !== 0) {
+    return priorityDifference;
+  }
+
+  const dateDifference = first.createdAt.getTime() - second.createdAt.getTime();
+
+  if (dateDifference !== 0) {
+    return dateDifference;
+  }
+
+  return first.id.localeCompare(second.id);
 }
 
 export function compareTicketsByPriorityAscending(
