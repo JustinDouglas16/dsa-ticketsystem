@@ -1,6 +1,29 @@
 import { compareTickets } from "../comparators/compareTickets";
 import { PriorityQueue } from "../data-structures/PriorityQueue";
 import type { Ticket, TicketPriority } from "../models/Ticket";
+import { mergeSort } from "../algorithms/mergeSort";
+import {
+  compareTicketsByIdAscending,
+  compareTicketsByIdDescending,
+  compareTicketsByNewest,
+  compareTicketsByOldest,
+  compareTicketsByPriorityAscending,
+  compareTicketsByPriorityDescending,
+  compareTicketsByStatus,
+  compareTicketsByTitleAscending,
+  compareTicketsByTitleDescending,
+} from "../comparators/ticketSortComparators";
+
+export type TicketSortOption =
+  | "id-ascending"
+  | "id-descending"
+  | "title-ascending"
+  | "title-descending"
+  | "oldest"
+  | "newest"
+  | "priority-highest"
+  | "priority-lowest"
+  | "status";
 
 export interface CreateTicketInput {
   id: string;
@@ -316,6 +339,39 @@ export class TicketService {
 
       this.queue.dequeue();
       this.queuedTicketIds.delete(ticket.id);
+    }
+  }
+
+  getSortedTickets(option: TicketSortOption): Ticket[] {
+    const tickets = this.getAllTickets();
+
+    switch (option) {
+      case "id-ascending":
+        return mergeSort(tickets, compareTicketsByIdAscending);
+
+      case "id-descending":
+        return mergeSort(tickets, compareTicketsByIdDescending);
+
+      case "title-ascending":
+        return mergeSort(tickets, compareTicketsByTitleAscending);
+
+      case "title-descending":
+        return mergeSort(tickets, compareTicketsByTitleDescending);
+
+      case "oldest":
+        return mergeSort(tickets, compareTicketsByOldest);
+
+      case "newest":
+        return mergeSort(tickets, compareTicketsByNewest);
+
+      case "priority-highest":
+        return mergeSort(tickets, compareTicketsByPriorityDescending);
+
+      case "priority-lowest":
+        return mergeSort(tickets, compareTicketsByPriorityAscending);
+
+      case "status":
+        return mergeSort(tickets, compareTicketsByStatus);
     }
   }
 }
