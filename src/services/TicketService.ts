@@ -50,6 +50,7 @@ export interface TicketStatistics {
   critical: number;
 }
 
+// never type: means that a value can never occur according to TypeScript.
 function assertNever(value: never): never {
   throw new Error(`Onbekende sorteeroptie: ${String(value)}`);
 }
