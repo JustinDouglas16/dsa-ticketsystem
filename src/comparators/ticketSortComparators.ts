@@ -20,7 +20,6 @@ export function compareTicketsByIdDescending(
   return second.id.localeCompare(first.id);
 }
 
-// use title IDs for similar titles
 export function compareTicketsByTitleAscending(
   first: Ticket,
   second: Ticket,
@@ -40,26 +39,37 @@ export function compareTicketsByTitleDescending(
   first: Ticket,
   second: Ticket,
 ): number {
-  return second.title.localeCompare(first.title, undefined, {
+  const titleDifference = second.title.localeCompare(first.title, undefined, {
     sensitivity: "base",
   });
+
+  if (titleDifference !== 0) {
+    return titleDifference;
+  }
+
+  return first.id.localeCompare(second.id);
 }
 
 export function compareTicketsByOldest(first: Ticket, second: Ticket): number {
-  return first.createdAt.getTime() - second.createdAt.getTime();
+  const dateDifference = first.createdAt.getTime() - second.createdAt.getTime();
+
+  if (dateDifference !== 0) {
+    return dateDifference;
+  }
+
+  return first.id.localeCompare(second.id);
 }
 
 export function compareTicketsByNewest(first: Ticket, second: Ticket): number {
-  return second.createdAt.getTime() - first.createdAt.getTime();
+  const dateDifference = second.createdAt.getTime() - first.createdAt.getTime();
+
+  if (dateDifference !== 0) {
+    return dateDifference;
+  }
+
+  return first.id.localeCompare(second.id);
 }
 
-/**
- * order of tickets as follows
- * highest priority
- * similar priorities: oldest
- * similar dates for oldest priorities: lowest ID
- *
- */
 export function compareTicketsByPriorityDescending(
   first: Ticket,
   second: Ticket,
@@ -84,9 +94,29 @@ export function compareTicketsByPriorityAscending(
   first: Ticket,
   second: Ticket,
 ): number {
-  return priorityValue[first.priority] - priorityValue[second.priority];
+  const priorityDifference =
+    priorityValue[first.priority] - priorityValue[second.priority];
+
+  if (priorityDifference !== 0) {
+    return priorityDifference;
+  }
+
+  const dateDifference = first.createdAt.getTime() - second.createdAt.getTime();
+
+  if (dateDifference !== 0) {
+    return dateDifference;
+  }
+
+  return first.id.localeCompare(second.id);
 }
 
 export function compareTicketsByStatus(first: Ticket, second: Ticket): number {
-  return statusValue[first.status] - statusValue[second.status];
+  const statusDifference =
+    statusValue[first.status] - statusValue[second.status];
+
+  if (statusDifference !== 0) {
+    return statusDifference;
+  }
+
+  return first.id.localeCompare(second.id);
 }

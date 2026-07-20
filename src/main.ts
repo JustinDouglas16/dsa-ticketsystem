@@ -1,24 +1,15 @@
 import "./style.css";
 
 import { TicketService } from "./services/TicketService";
-import { mergeSort } from "./algorithms/mergeSort";
+// import { mergeSort } from "./algorithms/mergeSort";
+// import {
+//   compareTicketsByIdAscending,
+//   compareTicketsByNewest,
+//   compareTicketsByPriorityDescending,
+//   compareTicketsByTitleAscending,
+// } from "./comparators/ticketSortComparators";
 
 const ticketService = new TicketService();
-
-const numbers = [8, 3, 5, 1, 9, 2];
-
-const names = ["Zara", "Anna", "Michael", "Brian"];
-
-const sortedNames = mergeSort(names, (first, second) =>
-  first.localeCompare(second),
-);
-
-console.log(sortedNames);
-
-const sortedNumbers = mergeSort(numbers, (first, second) => first - second);
-
-console.log("Originele nummers:", numbers);
-console.log("Gesorteerde nummers:", sortedNumbers);
 
 ticketService.addExistingTicket({
   id: "TCK-1001",
@@ -51,30 +42,69 @@ ticketService.addExistingTicket({
   priority: "high",
   createdAt: new Date("2026-06-19T09:15:00"),
 });
+// const allTickets = ticketService.getAllTickets();
 
-console.log("Alle tickets:");
-console.table(ticketService.getAllTickets());
+// const ticketsById = mergeSort(allTickets, compareTicketsByIdAscending);
 
-console.log("Ticket zoeken:");
-console.log(ticketService.getTicketById("tck-1002"));
+// console.log("Tickets op ID:");
+// console.table(ticketsById);
 
-console.log("Volgende ticket:");
-console.log(ticketService.peekNextTicket());
+// const ticketsByTitle = mergeSort(allTickets, compareTicketsByTitleAscending);
 
-const processedTicket = ticketService.processNextTicket();
+// console.log("Tickets op titel:");
+// console.table(ticketsByTitle);
 
-console.log("Verwerkt ticket:");
-console.log(processedTicket);
+// const ticketsByNewest = mergeSort(allTickets, compareTicketsByNewest);
 
-if (processedTicket) {
-  ticketService.closeTicket(processedTicket.id);
-}
+// console.log("Nieuwste tickets eerst:");
+// console.table(ticketsByNewest);
 
-console.log("Statistieken:");
-console.table(ticketService.getStatistics());
+// const ticketsByPriority = mergeSort(
+//   allTickets,
+//   compareTicketsByPriorityDescending,
+// );
 
-console.log("Nieuwe volgende ticket:");
-console.log(ticketService.peekNextTicket());
+// console.log("Tickets op prioriteit:");
+// console.table(ticketsByPriority);
+
+// const numbers = [8, 3, 5, 1, 9, 2];
+
+// const names = ["Zara", "Anna", "Michael", "Brian"];
+
+// const sortedNames = mergeSort(names, (first, second) =>
+//   first.localeCompare(second),
+// );
+
+// console.log(sortedNames);
+
+// const sortedNumbers = mergeSort(numbers, (first, second) => first - second);
+
+// console.log("Originele nummers:", numbers);
+// console.log("Gesorteerde nummers:", sortedNumbers);
+
+// console.log("Alle tickets:");
+// console.table(ticketService.getAllTickets());
+
+// console.log("Ticket zoeken:");
+// console.log(ticketService.getTicketById("tck-1002"));
+
+// console.log("Volgende ticket:");
+// console.log(ticketService.peekNextTicket());
+
+// const processedTicket = ticketService.processNextTicket();
+
+// console.log("Verwerkt ticket:");
+// console.log(processedTicket);
+
+// if (processedTicket) {
+//   ticketService.closeTicket(processedTicket.id);
+// }
+
+// console.log("Statistieken:");
+// console.table(ticketService.getStatistics());
+
+// console.log("Nieuwe volgende ticket:");
+// console.log(ticketService.peekNextTicket());
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
