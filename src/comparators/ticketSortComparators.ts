@@ -20,13 +20,20 @@ export function compareTicketsByIdDescending(
   return second.id.localeCompare(first.id);
 }
 
+// use title IDs for similar titles
 export function compareTicketsByTitleAscending(
   first: Ticket,
   second: Ticket,
 ): number {
-  return first.title.localeCompare(second.title, undefined, {
+  const titleDifference = first.title.localeCompare(second.title, undefined, {
     sensitivity: "base",
   });
+
+  if (titleDifference !== 0) {
+    return titleDifference;
+  }
+
+  return first.id.localeCompare(second.id);
 }
 
 export function compareTicketsByTitleDescending(
