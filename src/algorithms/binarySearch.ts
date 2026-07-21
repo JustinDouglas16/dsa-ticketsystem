@@ -1,7 +1,8 @@
-export function binarySearch<T>(
+export function binarySearch<T, K>(
+  // T = Ticket, K = string
   items: T[],
-  target: T,
-  compare: (item: T, target: T) => number,
+  target: K,
+  compare: (item: T, target: K) => number,
 ): T | undefined {
   let leftIndex = 0;
   let rightIndex = items.length - 1;
