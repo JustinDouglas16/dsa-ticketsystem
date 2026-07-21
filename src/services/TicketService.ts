@@ -13,6 +13,11 @@ import {
   compareTicketsByTitleAscending,
   compareTicketsByTitleDescending,
 } from "../comparators/ticketSortComparators";
+import {
+  binarySearch,
+  type BinarySearchResult,
+} from "../algorithms/binarySearch";
+import { compareTicketId } from "../comparators/compareTicketId";
 
 export type TicketSortOption =
   | "id-ascending"
@@ -48,6 +53,13 @@ export interface TicketStatistics {
   inProgress: number;
   closed: number;
   critical: number;
+}
+
+export interface TicketSearchResult {
+  ticket: Ticket | undefined;
+  index: number;
+  comparisons: number;
+  sortedItemCount: number;
 }
 
 // never type: means that a value can never occur according to TypeScript.
