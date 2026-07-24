@@ -13,10 +13,7 @@ import {
   compareTicketsByTitleAscending,
   compareTicketsByTitleDescending,
 } from "../comparators/ticketSortComparators";
-import {
-  binarySearch,
-  type BinarySearchResult,
-} from "../algorithms/binarySearch";
+import { binarySearch } from "../algorithms/binarySearch";
 import { compareTicketId } from "../comparators/compareTicketId";
 
 export type TicketSortOption =
@@ -74,10 +71,30 @@ export class TicketService {
 
   private readonly queuedTicketIds = new Set<string>();
 
-  private sortedTicketByIdCache: Ticket[] | null = null;
+  private copyTicket(ticket: Ticket): Ticket {
+    return {
+      ...ticket,
+      createdAt: new Date(ticket.createdAt),
+      resolvedAt:
+        ticket.resolvedAt === null ? null : new Date(ticket.resolvedAt),
+    };
+  }
+
+  private sortedTicketsByIdCache: Ticket[] | null = null;
 
   private invalidateSortedCache(): void {
-    this.sortedTicketByIdCache = null;
+    this.sortedTicketsByIdCache = null;
+  }
+
+  private getTicketsSortedById(): Ticket[] {
+    if (this.sortedTicketsByIdCache === null) {
+      this.sortedTicketsByIdCache = mergeSort(
+        Array.from(this.tickets.values()),
+        compareTicketsByIdAscending,
+      );
+    }
+
+    return this.sortedTicketsByIdCache;
   }
 
   createTicket(input: CreateTicketInput): Ticket {
@@ -169,8 +186,9 @@ export class TicketService {
 
   getTicketById(id: string): Ticket | undefined {
     const normalizedId = id.trim().toUpperCase();
+    const ticket = this.tickets.get(normalizedId);
 
-    return this.tickets.get(normalizedId);
+    return ticket ? this.copyTicket(ticket) : undefined;
   }
 
   hasTicket(id: string): boolean {
@@ -180,7 +198,9 @@ export class TicketService {
   }
 
   getAllTickets(): Ticket[] {
-    return Array.from(this.tickets.values());
+    return Array.from(this.tickets.values(), (ticket) =>
+      this.copyTicket(ticket),
+    );
   }
 
   getTicketCount(): number {
@@ -210,7 +230,9 @@ export class TicketService {
   peekNextTicket(): Ticket | undefined {
     this.cleanQueueTop();
 
-    return this.queue.peek();
+    const ticket = this.queue.peek();
+
+    return ticket ? this.copyTicket(ticket) : undefined;
   }
 
   processNextTicket(): Ticket | undefined {
@@ -232,7 +254,8 @@ export class TicketService {
 
     currentTicket.status = "in-progress";
 
-    return currentTicket;
+    // return currentTicket;
+    return this.copyTicket(currentTicket);
   }
 
   closeTicket(id: string): Ticket {
@@ -250,7 +273,8 @@ export class TicketService {
     ticket.status = "closed";
     ticket.resolvedAt = new Date();
 
-    return ticket;
+    // return ticket;
+    return this.copyTicket(ticket);
   }
 
   reopenTicket(id: string): Ticket {
@@ -407,29 +431,16 @@ export class TicketService {
 
   searchTicketByIdWithBinarySearch(id: string): TicketSearchResult {
     const normalizedId = id.trim().toUpperCase();
+    const sortedTickets = this.getTicketsSortedById();
 
-    const sortedTickets = this.getSortedTickets("id-ascending");
-
-    const result: BinarySearchResult<Ticket> = binarySearch(
-      sortedTickets,
-      normalizedId,
-      compareTicketId,
-    );
+    const result = binarySearch(sortedTickets, normalizedId, compareTicketId);
 
     return {
-      ticket: result.item,
+      ticket:
+        result.item === undefined ? undefined : this.copyTicket(result.item),
       index: result.index,
       comparisons: result.comparisons,
       sortedItemCount: sortedTickets.length,
     };
-
-    // use this if copyTicket() was implemented
-    // return {
-    //   ticket:
-    //     result.item === undefined ? undefined : this.copyTicket(result.item),
-    //   index: result.index,
-    //   comparisons: result.comparisons,
-    //   sortedItemCount: sortedTickets.length,
-    // };
   }
 }
