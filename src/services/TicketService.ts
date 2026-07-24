@@ -394,4 +394,32 @@ export class TicketService {
         return assertNever(option);
     }
   }
+
+  searchTicketByIdWithBinarySearch(id: string): TicketSearchResult {
+    const normalizedId = id.trim().toUpperCase();
+
+    const sortedTickets = this.getSortedTickets("id-ascending");
+
+    const result: BinarySearchResult<Ticket> = binarySearch(
+      sortedTickets,
+      normalizedId,
+      compareTicketId,
+    );
+
+    return {
+      ticket: result.item,
+      index: result.index,
+      comparisons: result.comparisons,
+      sortedItemCount: sortedTickets.length,
+    };
+
+    // use this if copyTicket() was implemented
+    // return {
+    //   ticket:
+    //     result.item === undefined ? undefined : this.copyTicket(result.item),
+    //   index: result.index,
+    //   comparisons: result.comparisons,
+    //   sortedItemCount: sortedTickets.length,
+    // };
+  }
 }
