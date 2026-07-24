@@ -74,6 +74,12 @@ export class TicketService {
 
   private readonly queuedTicketIds = new Set<string>();
 
+  private sortedTicketByIdCache: Ticket[] | null = null;
+
+  private invalidateSortedCache(): void {
+    this.sortedTicketByIdCache = null;
+  }
+
   createTicket(input: CreateTicketInput): Ticket {
     const id = input.id.trim().toUpperCase();
     const title = input.title.trim();
@@ -108,6 +114,7 @@ export class TicketService {
     this.tickets.set(ticket.id, ticket);
     this.queue.enqueue(ticket);
     this.queuedTicketIds.add(ticket.id);
+    this.invalidateSortedCache();
 
     return ticket;
   }
@@ -154,6 +161,7 @@ export class TicketService {
     if (ticket.status === "open") {
       this.queue.enqueue(ticket);
       this.queuedTicketIds.add(ticket.id);
+      this.invalidateSortedCache();
     }
 
     return ticket;
@@ -297,6 +305,7 @@ export class TicketService {
     const existed = this.tickets.delete(normalizedId);
 
     this.queuedTicketIds.delete(normalizedId);
+    this.invalidateSortedCache();
 
     return existed;
   }
@@ -305,6 +314,7 @@ export class TicketService {
     this.tickets.clear();
     this.queue.clear();
     this.queuedTicketIds.clear();
+    this.invalidateSortedCache();
   }
 
   getStatistics(): TicketStatistics {
