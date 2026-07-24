@@ -36,20 +36,15 @@ ticketService.addExistingTicket({
   createdAt: new Date("2026-06-19T09:00:00"),
 });
 
-console.log("Originele volgorde:");
-console.table(ticketService.getAllTickets());
+const sortedTickets = ticketService.getSortedTickets("id-ascending");
 
-console.log("ID oplopend:");
-console.table(ticketService.getSortedTickets("id-ascending"));
+console.log("Op ID gesorteerde tickets:");
+console.table(sortedTickets);
 
-console.log("Titel oplopend:");
-console.table(ticketService.getSortedTickets("title-ascending"));
+const searchResult = ticketService.searchTicketByIdWithBinarySearch("TCK-1003");
 
-console.log("Nieuwste eerst:");
-console.table(ticketService.getSortedTickets("newest"));
-
-console.log("Hoogste prioriteit eerst:");
-console.table(ticketService.getSortedTickets("priority-highest"));
+console.log("Binary Search-resultaat:");
+console.log(searchResult);
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -57,26 +52,57 @@ if (!app) {
   throw new Error("Het element met id 'app' bestaat niet.");
 }
 
-const sortedTickets = ticketService.getSortedTickets("priority-highest");
+const searchResultHtml = searchResult.ticket
+  ? `
+      <article>
+        <h2>Ticket gevonden</h2>
+
+        <p>
+          <strong>${searchResult.ticket.id}</strong>
+          — ${searchResult.ticket.title}
+        </p>
+
+        <p>
+          Prioriteit:
+          ${searchResult.ticket.priority}
+        </p>
+
+        <p>
+          Vergelijkingen:
+          ${searchResult.comparisons}
+        </p>
+      </article>
+    `
+  : `
+      <article>
+        <h2>Ticket niet gevonden</h2>
+
+        <p>
+          Vergelijkingen:
+          ${searchResult.comparisons}
+        </p>
+      </article>
+    `;
 
 app.innerHTML = `
   <main>
     <h1>Ticketingsysteem</h1>
 
-    <h2>Tickets op prioriteit</h2>
+    <h2>Gesorteerde tickets</h2>
 
     <ul>
       ${sortedTickets
         .map(
           (ticket) => `
             <li>
-              <strong>${ticket.id}</strong>
+              ${ticket.id}
               — ${ticket.title}
-              — ${ticket.priority}
             </li>
           `,
         )
         .join("")}
     </ul>
+
+    ${searchResultHtml}
   </main>
 `;
