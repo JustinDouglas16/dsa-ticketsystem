@@ -1,7 +1,16 @@
+export interface BinarySearchStep<T> {
+  leftIndex: number;
+  middleIndex: number;
+  rightIndex: number;
+  middleItem: T;
+  comparison: number;
+}
+
 export interface BinarySearchResult<T> {
   item: T | undefined;
   index: number;
   comparisons: number;
+  steps: BinarySearchStep<T>[];
 }
 
 export function binarySearch<T, K>(
@@ -13,6 +22,8 @@ export function binarySearch<T, K>(
   let rightIndex = items.length - 1;
   let comparisons = 0;
 
+  const steps: BinarySearchStep<T>[] = [];
+
   while (leftIndex <= rightIndex) {
     const middleIndex = Math.floor((leftIndex + rightIndex) / 2);
 
@@ -22,11 +33,20 @@ export function binarySearch<T, K>(
 
     const comparison = compare(middleItem, target);
 
+    steps.push({
+      leftIndex,
+      middleIndex,
+      rightIndex,
+      middleItem,
+      comparison,
+    });
+
     if (comparison === 0) {
       return {
         item: middleItem,
         index: middleIndex,
         comparisons,
+        steps,
       };
     }
 
@@ -41,5 +61,6 @@ export function binarySearch<T, K>(
     item: undefined,
     index: -1,
     comparisons,
+    steps,
   };
 }
