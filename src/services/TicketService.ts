@@ -429,15 +429,34 @@ export class TicketService {
     }
   }
 
+  // searchTicketByIdWithBinarySearch(id: string): TicketSearchResult {
+  //   const normalizedId = id.trim().toUpperCase();
+  //   const sortedTickets = this.getTicketsSortedById();
+
+  //   const result = binarySearch(sortedTickets, normalizedId, compareTicketId);
+
+  //   return {
+  //     ticket:
+  //       result.item === undefined ? undefined : this.copyTicket(result.item),
+  //     index: result.index,
+  //     comparisons: result.comparisons,
+  //     sortedItemCount: sortedTickets.length,
+  //   };
+  // }
+
   searchTicketByIdWithBinarySearch(id: string): TicketSearchResult {
     const normalizedId = id.trim().toUpperCase();
-    const sortedTickets = this.getTicketsSortedById();
+
+    if (normalizedId.length === 0) {
+      throw new Error("Voer een ticket-ID in.");
+    }
+
+    const sortedTickets = this.getSortedTickets("id-ascending");
 
     const result = binarySearch(sortedTickets, normalizedId, compareTicketId);
 
     return {
-      ticket:
-        result.item === undefined ? undefined : this.copyTicket(result.item),
+      ticket: result.item,
       index: result.index,
       comparisons: result.comparisons,
       sortedItemCount: sortedTickets.length,

@@ -1,5 +1,6 @@
 import type { Ticket } from "../models/Ticket";
+import { compareIds } from "./compareIds";
 
 export function compareTicketId(ticket: Ticket, targetId: string): number {
-  return ticket.id.localeCompare(targetId);
+  return compareIds(ticket.id, targetId);
 }
